@@ -34,7 +34,7 @@
 #define CANT_PARPADEOS 5
 /// recordar que se mantiene prendido un 50% del tiempo, entonces la cantidad de
 /// semi periodos a esperar en encendido y apagado es el doble
-#define SEMIPERIODOS CANT_PARPADEOS * 2
+#define SEMIPERIODOS (CANT_PARPADEOS * 2)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
