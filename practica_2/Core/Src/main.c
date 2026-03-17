@@ -39,7 +39,10 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define ZERO_OR_COMPILE_ERROR(cond) ((int)sizeof(char[1 - (2 * !(cond))]) - 1)
+#define IS_ARRAY(array) ZERO_OR_COMPILE_ERROR(	\
+        !__builtin_types_compatible_p(__typeof__(array), __typeof__(&(array)[0])))
+#define ARRAY_SIZE(array) ((size_t)(IS_ARRAY(array) + (sizeof(array)/sizeof(array[0]))))
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -139,7 +142,7 @@ int main(void)
       HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
       contador_semiperiodo++;
       /// verificamos si contador_semiperiodo llego al valor maximo de semiperiodos (en este caso es 30)
-      if(contador_semiperiodo == (sizeof(retrasos) / sizeof(retrasos[0])) * SEMIPERIODOS) { contador_semiperiodo = 0; }
+      if(contador_semiperiodo == ARRAY_SIZE(retrasos) * SEMIPERIODOS) { contador_semiperiodo = 0; }
       /// si el periodo es multiplo de SEMIPERIODOS entonces modificamos delayWrite.
       if(contador_semiperiodo % SEMIPERIODOS == 0) {
         delayWrite(&delay, retrasos[contador_semiperiodo / SEMIPERIODOS]);
