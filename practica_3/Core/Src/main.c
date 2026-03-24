@@ -31,15 +31,37 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+/**
+ * @brief The number of times the LED will blink before changing the delay duration.
+ */
 #define BLINK_COUNT 5
-#define HALF_PERIODS (BLINK_COUNT * 2) ///< it remains on with a 50% duty cycle (half period)
+
+/**
+ * @brief The number of half periods in one full period of the LED blinking.
+ *
+ * Since the LED will blink with a 50% duty cycle, it will be on for half of the
+ * period and off for the other half.
+ * Therefore, the number of half periods is equal to the number of blinks multiplied by 2.
+ */
+#define HALF_PERIODS (BLINK_COUNT * 2)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+
+/**
+ * @brief Macro to cause a compile error if a condition is not met.
+ */
 #define ZERO_OR_COMPILE_ERROR(cond) ((int)sizeof(char[1 - (2 * !(cond))]) - 1)
+/**
+ * @brief Macro to check if a variable is an array. It will cause a compile error
+ */
 #define IS_ARRAY(array) ZERO_OR_COMPILE_ERROR(	\
         !__builtin_types_compatible_p(__typeof__(array), __typeof__(&(array)[0])))
+/**
+ * @brief Macro to calculate the number of elements in an array.
+ */
 #define ARRAY_SIZE(array) ((size_t)(IS_ARRAY(array) + (sizeof(array)/sizeof(array[0]))))
 /* USER CODE END PM */
 
@@ -47,9 +69,17 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-delay_t delay;
-uint8_t halfperiod_counter;
-uint16_t delays[] = {500, 100, 100, 1000};
+delay_t delay;  ///< variable that represents the delay of the LED blinking
+uint8_t halfperiod_counter; ///< variable that counts the number of half periods that have elapsed since the start of the program
+/**
+ * @brief The array that contains the duration of the delay for each period of
+ * the LED blinking in milliseconds.
+ *
+ * The LED will blink with a 50% duty cycle, so the duration of the delay will
+ * be modified every BLINK_COUNT blinks, which corresponds to HALF_PERIODS half
+ * periods.
+ */
+const uint16_t delays[] = {500, 100, 100, 1000};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
