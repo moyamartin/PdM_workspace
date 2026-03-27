@@ -81,7 +81,7 @@ EraseFlash - Sector:0x0 Size:0x4000 2026-03-13T11:26:37 INFO flash_loader.c: Sta
 y en otra terminal usar gdb-multiarch con el binario compilado:
 
 ```
-$ gdb-multiarch -f build/Debug/clase2.elf
+$ gdb-multiarch -f build/Debug/practica_3.elf
 GNU gdb (Ubuntu 15.0.50.20240403-0ubuntu1) 15.0.50.20240403-git
 Copyright (C) 2024 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
