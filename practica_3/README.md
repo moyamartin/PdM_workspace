@@ -1,4 +1,4 @@
-# Practica 2
+# Practica 3
 
 Este ejercicio implementa un modulo de software para trabajar con retardos no bloqueantes
 definido por la estructura `delay_t`, utilizando como Tick de referencia la HAL correspondiente
