@@ -8,15 +8,18 @@
 static debounceState_t debounceFSM;
 static delay_t delayDebounce;
 static bool_t keyPressed;
+static bool_t isInitialized = false;
 
 void debounceFSM_init()
 {
 	delayInit(&delayDebounce, ANTIBOUNCE_DELAY);
 	debounceFSM = BUTTON_UP;
+	isInitialized = true;
 }
 
 void debounceFSM_update()
 {
+	if(isInitialized == false) { return; }
 	switch(debounceFSM) {
 	case BUTTON_UP:
 		if(HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin) == GPIO_PIN_RESET) {
@@ -46,6 +49,7 @@ void debounceFSM_update()
 }
 
 bool_t readKey() {
+	if(isInitialized == false) { return false; }
 	bool_t temp_value = keyPressed;
 	keyPressed = false;
 	return temp_value;
