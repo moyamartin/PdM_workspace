@@ -1,4 +1,4 @@
-# Practica 3
+# Practica 4
 
 Este ejercicio implementa una MEF (Maquina de Estados Finita) anti-rebote que
 permita leer el estado de un pulsador de la placa NUCLEO-F446RE y generar
