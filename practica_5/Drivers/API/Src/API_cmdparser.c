@@ -137,14 +137,16 @@ void cmdPoll(void)
 	while(iterations--) {
 		switch(cmdParserFSM){
 		case CMD_IDLE:
-			// EOL, Carriage return, line feed and comment should be ignored
+			// if there are no bytes to read, return immediately
 			if(uartReceiveStringSize(&c, 1) != true) return;
+			// EOL, Carriage return, line feed and comment should be ignored
 			if(c != EOL && c != CARRIAGE_RETURN && c!= LINE_FEED) {
 				cmdParserFSM = CMD_RECEIVING;
 				rx_buffer[rx_buffer_idx++] = c;
 			}
 			break;
 		case CMD_RECEIVING:
+			// if there are no bytes to read, return immediately
 			if(uartReceiveStringSize(&c, 1) != true) return;
 			// ignore comments. We could ignore '#' at CMD_IDLE, but in that case it wouldn't make
 			// sense to change from IDLE to ERROR, so we are checking that in this instance
