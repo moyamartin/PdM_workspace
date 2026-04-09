@@ -138,7 +138,9 @@ void cmdPoll(void)
 		switch(cmdParserFSM){
 		case CMD_IDLE:
 			// if there are no bytes to read, return immediately
-			if(uartReceiveStringSize(&c, 1) != true) return;
+			if(uartReceiveStringSize(&c, 1) != true) {
+				return;
+			}
 			// EOL, Carriage return, line feed and comment should be ignored
 			if(c != EOL && c != CARRIAGE_RETURN && c!= LINE_FEED) {
 				cmdParserFSM = CMD_RECEIVING;
@@ -147,7 +149,9 @@ void cmdPoll(void)
 			break;
 		case CMD_RECEIVING:
 			// if there are no bytes to read, return immediately
-			if(uartReceiveStringSize(&c, 1) != true) return;
+			if(uartReceiveStringSize(&c, 1) != true) {
+				return;
+			}
 			// ignore comments. We could ignore '#' at CMD_IDLE, but in that case it wouldn't make
 			// sense to change from IDLE to ERROR, so we are checking that in this instance
 			if((rx_buffer_idx == 1 && rx_buffer[0] == SLASH && c == SLASH) || rx_buffer[0] == NUMERAL) {
@@ -198,22 +202,26 @@ void cmdPoll(void)
 			} else {
 				cmdParserFSM = CMD_EXEC;
 			}
-			break;
+			return;
 		case CMD_EXEC:
 			// execute command from list of cmd_t
 			cmdParserStatus = cmds[cmd_idx].func(args, arg_counter);
 			// check if cmd failed
 			if(cmdParserStatus != CMD_OK) {
 				cmdParserFSM = CMD_ERROR;
-				break;
+			} else {
+				cmdParserReset();
 			}
-			cmdParserReset();
-			break;
+			return;
 		case CMD_ERROR:
 			// print error msg
 			uartSendString(err_to_str(cmdParserStatus));
 			cmdParserReset();
-			break;
+			return;
+		default:
+			cmdParserFSM = CMD_ERROR;
+			cmdParserStatus = CMD_ERR_UNKNOWN;
+			return;
 		}
 	}
 }
