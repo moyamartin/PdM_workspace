@@ -205,6 +205,11 @@ void cmdPoll(void)
 			return;
 		case CMD_EXEC:
 			// execute command from list of cmd_t
+			if(cmds[cmd_idx].func == NULL) {
+				cmdParserStatus = CMD_ERR_UNKNOWN;
+				cmdParserFSM = CMD_ERROR;
+				return;
+			}
 			cmdParserStatus = cmds[cmd_idx].func(args, arg_counter);
 			// check if cmd failed
 			if(cmdParserStatus != CMD_OK) {
